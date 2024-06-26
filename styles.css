@@ -1,3 +1,8 @@
+body{
+    position: fixed;
+    width: 100%;
+}
+
 .tictactoegrid{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -41,3 +46,27 @@
     padding-bottom: .67em;
 }
 
+.topboard{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center; 
+}
+.topboard > h3{
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+.clear{
+    padding: 2px;
+    margin-top: 50px;
+    width: 100px;
+    height: 30px;
+}
+.close{
+    background-color: red;
+    color: white;
+    border: #f0f0f0;
+}
+button:hover{
+    background-color: #f0f0f0;
+    color: red;
+}

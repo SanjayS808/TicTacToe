@@ -5,7 +5,8 @@ const GameBoard = (() => {
 
     let winner = '';
     let gameOver = false; 
-
+    document.querySelector('.plX').style.color = 'red';
+    document.querySelector('.plO').style.color = 'black';
     const winningCombos = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
         [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
@@ -19,12 +20,14 @@ const GameBoard = (() => {
         currentPlayer = players[0];
         gameOver = false;
         winner = '';
-        console.log(board);
+        
         const parent = document.querySelector('.tictactoegrid');
         const cells = parent.children;
         for (let i=0; i<9; i++) {
             cells[i].innerHTML = '';
         }
+        document.querySelector('.plX').style.color = 'red';
+        document.querySelector('.plO').style.color = 'black';
     }
 
     const checkWinner = () => {
@@ -39,11 +42,11 @@ const GameBoard = (() => {
                     spread: 70,
                     origin: { y: 0.6 }
                 });
+
+                
+                
                 clearBoard();
-                console.log('winner is ' + board[a]);
-                gameOver = true;
-                winner = board[a];
-                return board[a];  
+                return; 
             }
 
         }
@@ -51,9 +54,7 @@ const GameBoard = (() => {
         if (!board.includes('')) {
             console.log('tie');
             document.querySelector('.game').innerHTML = 'Its a tie.';
-            gameOver = true;
-            winner = 'tie';
-
+            clearBoard();
             return 'tie';
         }
 
@@ -62,24 +63,28 @@ const GameBoard = (() => {
 
     const play = (index) => {
         board = GameBoard.getBoard();
-        console.log(board[index]);
+        if (gameOver) {
+            return;
+        }
+        
         if (board[index] !== ''){
-            console.log(board[index]);
-            console.log('invalid move' + board[index]);
             return;
         }
         
         board[index] = currentPlayer;
-        console.log('valid move');  
+         
         checkWinner();
         if (gameOver) {
             clearBoard();
-            console.log('game over');
+        
             return;
         }
-        else{
+        else if(winner === ''){
+            document.querySelector('.pl'+currentPlayer).style.color = 'black';
             currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
-            document.querySelector('.game').innerHTML = 'Current player is ' + currentPlayer;
+
+            document.querySelector('.pl'+currentPlayer).style.color = 'red';
+            console.log('run');
         }
 
     }    
@@ -118,7 +123,7 @@ const displayController = (() => {
 const clearButton = document.querySelector('.clear');
 
 clearButton.addEventListener('click', () => {
-    document.querySelector('.game').innerHTML = '';
+    document.querySelector('.game').innerHTML = '‎ ';
     GameBoard.clearBoard();
     displayController();
     
@@ -129,7 +134,11 @@ displayController();
 
 const test = document.querySelector('.test');
 
+document.querySelector('.instructions').addEventListener('click', () => {
+    document.querySelector("dialog").showModal();
+    console.log('run');
+});
 
-
-
-
+document.querySelector('.close').addEventListener('click', () => {
+    document.querySelector("dialog").close();
+});
