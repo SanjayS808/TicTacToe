@@ -15,10 +15,16 @@ const GameBoard = (() => {
 
     const clearBoard = () => {
         board = ['', '', '', '', '', '', '', '', ''];
+        
         currentPlayer = players[0];
         gameOver = false;
         winner = '';
-
+        console.log(board);
+        const parent = document.querySelector('.tictactoegrid');
+        const cells = parent.children;
+        for (let i=0; i<9; i++) {
+            cells[i].innerHTML = '';
+        }
     }
 
     const checkWinner = () => {
@@ -28,6 +34,12 @@ const GameBoard = (() => {
 
             if (board[a] && board[a] === board[b] && board[a] === board[c]) {
                 document.querySelector('.game').innerHTML = 'Winner is ' + board[a];
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                clearBoard();
                 console.log('winner is ' + board[a]);
                 gameOver = true;
                 winner = board[a];
@@ -38,8 +50,10 @@ const GameBoard = (() => {
 
         if (!board.includes('')) {
             console.log('tie');
+            document.querySelector('.game').innerHTML = 'Its a tie.';
             gameOver = true;
             winner = 'tie';
+
             return 'tie';
         }
 
@@ -47,14 +61,16 @@ const GameBoard = (() => {
     }
 
     const play = (index) => {
+        board = GameBoard.getBoard();
+        console.log(board[index]);
         if (board[index] !== ''){
-            
+            console.log(board[index]);
             console.log('invalid move' + board[index]);
             return;
         }
-
+        
         board[index] = currentPlayer;
-
+        console.log('valid move');  
         checkWinner();
         if (gameOver) {
             clearBoard();
@@ -63,6 +79,7 @@ const GameBoard = (() => {
         }
         else{
             currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
+            document.querySelector('.game').innerHTML = 'Current player is ' + currentPlayer;
         }
 
     }    
@@ -80,10 +97,7 @@ const displayController = (() => {
     const parent = document.querySelector('.tictactoegrid');
     const cells = parent.children;
 
-    for (let i=0; i<9; i++) {
-        GameBoard.clearBoard();
-        
-    }
+    
 
     for (let i=0;i<9;i++){
         cells[i].addEventListener('click', () => {
@@ -104,11 +118,18 @@ const displayController = (() => {
 const clearButton = document.querySelector('.clear');
 
 clearButton.addEventListener('click', () => {
+    document.querySelector('.game').innerHTML = '';
     GameBoard.clearBoard();
     displayController();
     
 });
 
 displayController();
+
+
+const test = document.querySelector('.test');
+
+
+
 
 
